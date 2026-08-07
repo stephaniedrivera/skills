@@ -8,7 +8,7 @@ A skill is just a set of written instructions that tells an AI assistant how to 
 
 | Skill | What it does |
 |---|---|
-| [main-character-moment](skills/main-character-moment) | Goes back through your Slack, finds the work you actually did, and writes it up so the evidence still exists at review time. |
+| [main-character-moment](main-character-moment) | Goes back through your Slack, finds the work you actually did, and writes it up so the evidence still exists at review time. |
 
 ## How to install any of these
 
