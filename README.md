@@ -1,47 +1,29 @@
-# Main Character Moment
+# Skills
 
-A skill that goes back through your Slack, finds the work you actually did, and writes it up properly — so the evidence still exists when review season arrives and your brain surrenders nothing.
+Skills I've built and use. Take any of them, pull them apart, make them yours.
 
-You did the thing. You unblocked the stuck project, you answered the question nobody else could, you quietly shipped the feature that was rotting in the backlog. Then you forgot all about it.
+A skill is just a set of written instructions that tells an AI assistant how to do one job properly, every time. There's no code involved — it's plain text. If you can read it, you can change it.
 
-This finds the receipts.
+## What's here
 
-## What it does
+| Skill | What it does |
+|---|---|
+| [main-character-moment](skills/main-character-moment) | Goes back through your Slack, finds the work you actually did, and writes it up so the evidence still exists at review time. |
 
-Once a run, it reads back through your Slack — your messages, the threads you were central to, praise from other people, huddle notes you're tagged in, canvases you made — and pulls out concrete wins. Each one gets written up in STAR format (Situation, Task, Action, Result) with a link back to the evidence, and appended to a running canvas called **Main Character Moments**.
+## How to install any of these
 
-It never overwrites what's already there. Every run adds to the pile.
+**Claude Code** — copy the skill's folder into `.claude/skills/` in your project, or in your home directory to have it available everywhere. Restart Claude Code and it'll pick it up.
 
-If you have a calendar or documents connected, it reads those too. If you don't, it carries on without them.
+**Slack** — open the `SKILL.md` file and paste its contents in as a Slackbot skill.
 
-## The one rule that matters
+**Anything else** — these are plain text instructions with no dependencies. Paste the contents of `SKILL.md` into whichever AI assistant you use.
 
-**It will not fabricate a result.**
+Each skill has its own README with the detail on what it reads, what it produces, and what to change first.
 
-If the evidence for something is thin, it says so and flags it as worth revisiting, rather than inventing a number to fill the page. An AI that inflates your wins gives you a log you can't take into a real conversation, which is worse than having no log at all.
+## Making one yourself
 
-## How to use it
-
-**In Claude Code** — drop `SKILL.md` into `.claude/skills/main-character-moment/SKILL.md` in your project or home directory. Needs Slack connected.
-
-**In Slack** — paste the contents in as a Slackbot skill.
-
-**Anywhere else** — it's plain text instructions. Paste it into whichever AI assistant you use, as long as it can read your Slack.
-
-## Cadence
-
-Fortnightly is the sweet spot — recent enough that the context is still warm, spaced enough that there's something worth logging. Monthly works if your pace is slower. Daily is noise with extra steps.
-
-## Make it yours
-
-This is deliberately generic. It assumes no particular team, tool stack, or job title, and the tags it uses (Impact, Collaboration, Leadership, Initiative, Growth) are a starting point, not gospel.
-
-Fork it. Change the tags to match how your company actually talks about performance. Change the lookback window. Change the output format. Point it at whatever else you live in.
-
-## A note on privacy
-
-It only reads what you already have access to. This is your record of your work — it isn't for going through other people's material to pad the list out.
+The honest answer is that these are much easier to write than they look. Each one started as me describing a job I kept doing manually, in plain English, until the description was precise enough to hand over. If something here is close to what you need but not quite it, editing this is a far better use of your time than starting from scratch.
 
 ---
 
-© 2026 Samantha Raphael
+© 2026 Samantha Raphael. Free to use and adapt, credit appreciated.
