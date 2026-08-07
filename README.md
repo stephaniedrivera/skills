@@ -38,8 +38,10 @@ This is deliberately generic. It assumes no particular team, tool stack, or job 
 
 Fork it. Change the tags to match how your company actually talks about performance. Change the lookback window. Change the output format. Point it at whatever else you live in.
 
-MIT licensed, so you can do all of that freely.
-
 ## A note on privacy
 
 It only reads what you already have access to. This is your record of your work — it isn't for going through other people's material to pad the list out.
+
+---
+
+© 2026 Samantha Raphael
