@@ -1,6 +1,6 @@
 ---
 name: main-character-moment
-description: Finds concrete work wins in the user's recent Slack activity (their messages and threads, praise from others, huddle notes they're tagged in, canvases they've made), writes each one up in STAR format, and appends them to a running Slack canvas so the evidence still exists at review time. Pulls optional calendar and document context when connected. Use whenever the user mentions a wins log, brag doc, highlight reel, main character moment, tracking accomplishments, prepping for a performance review or self-assessment, building a promotion case, or updating a resume. Also use for retrospective asks like "what did I actually ship this quarter", even if they never name this skill.
+description: Finds concrete work wins in the user's recent Slack activity (their messages and threads, praise from others, huddle notes they're tagged in, canvases they've made), writes each one up in STAR format, and appends them to a running document so the evidence still exists at review time. Pulls optional calendar and document context when connected. Use whenever the user mentions a wins log, brag doc, highlight reel, main character moment, tracking accomplishments, prepping for a performance review or self-assessment, building a promotion case, or updating a resume. Also use for retrospective asks like "what did I actually ship this quarter", even if they never name this skill.
 ---
 
 # Main Character Moment
@@ -13,7 +13,7 @@ It works in any role and any organisation. Nothing here assumes a particular tea
 
 ## What it reads
 
-**Slack. Always.** Everything runs through the Slack MCP, and Slack alone is enough for a full run. Look for the fingerprints the user left behind:
+**Slack. Always.** Look for the fingerprints the user left behind:
 
 - Their own messages and the threads they were central to
 - Mentions, reactions and outright praise. Someone else saying "this saved us" is the strongest evidence there is
@@ -22,9 +22,9 @@ It works in any role and any organisation. Nothing here assumes a particular tea
 
 **Calendar. If it's connected.** Events with notes or a description attached get read for what was discussed, decided, or delivered.
 
-**Documents. If they're connected.** Docs the user created and shared, read for what they've been building.
+**Notion. If it's connected.** Docs the user created and shared, read for what they've been building.
 
-Calendar and docs are both optional garnish. If either isn't connected, or a lookup throws an error, skip it, note it in the footer, and carry on. A missing connector never blocks the run.
+Calendar and Notion are both optional garnish. If either isn't connected, or a lookup throws an error, skip it, note it in the footer, and carry on. A missing connector never blocks the run.
 
 Only read what the user already has access to. This is their record of their work. No rifling through other people's material to pad the list out.
 
@@ -34,24 +34,33 @@ Only read what the user already has access to. This is their record of their wor
 
 This file is the skill **definition**. Instructions only. Never write logged wins into it.
 
+Fetch the review guide:
+How to Write a Self Review: https://www.notion.so/descript/How-to-Write-a-Self-Review-231abe2e1a50807a8360c1af638ccc28.
+
 Output lives in a separate running Slack canvas titled **Main Character Moments**. On the first run it won't exist yet, so create it with the Slack MCP's canvas creation tool (`slack_create_canvas`) and hang on to its file_id or link so every future run appends to the same place instead of scattering wins across a dozen orphan canvases.
 
 Set the lookback window:
 
-- Default to everything since the last dated section in the log canvas
-- If the log is brand new, default to the last 2 weeks
+- Default to everything since the last dated section in the log canvas.
+- If the log is brand new, default to the last year.
 - Only ask the user if they want a different window, or want to narrow to a specific project. Otherwise just go. Nobody needs a clarifying question about a thing they didn't ask for
 
 ### Phase 2 — Gather
 
 Bulk searches, capped. Enough signal to write honestly, not a forensic audit of the user's entire Slack history.
 
-- **Slack search.** Cap at around six searches covering distinct angles: shipped work, praise and reactions, problem-solving, leadership and initiative, cross-team help. Include a pass specifically for huddle notes the user is tagged in, since those tend to carry decisions that never made it into a channel
+- **Slack search.** Cap at around six searches covering distinct angles: shipped work, praise and reactions, problem-solving, leadership and initiative, cross-team help. Include a pass specifically for huddle notes the user is tagged in, since those tend to carry decisions that never made it into a channel.
+- -**Notion.** Fetch team meeting notes or retro docs, and any project docs the user authored or contributed to — do a pass looking for the user's contributions and compliments from other team members.
 - **Calendar.** One pass over the window. Pull the text from events that have notes or a description. Events with nothing attached get skipped. Don't go fetching extra context for an empty meeting invite
 - **Documents and canvases.** Find what the user created and shared in the window. Read the top few most relevant, around five. Not everything they've ever touched
 - If a source isn't available, skip it and say so in the footer
 
 ### Phase 3 — Synthesize
+
+Once you have the raw material, ask Claude:
+"What are the 3-5 strongest accomplishment themes from this evidence?"
+"Which of these would a calibration reviewer who doesn't know me find most compelling?"
+"What's missing? What did I do that we haven't found evidence for yet?"
 
 Pick out **1 to 5 concrete wins**. Moments with real evidence behind them, not a shapeless fog of activity.
 
