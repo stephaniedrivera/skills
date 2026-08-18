@@ -9,6 +9,7 @@ A skill is just a set of written instructions that tells an AI assistant how to 
 | Skill | What it does |
 |---|---|
 | [main-character-moment](main-character-moment) | Goes back through your Slack, finds the work you actually did, and writes it up so the evidence still exists at review time. |
+| [ticket-radar](ticket-radar) | Reads your support queue each morning, narrows to the product areas you own, and tells you what's actually worth escalating today. |
 
 ## How to install any of these
 
