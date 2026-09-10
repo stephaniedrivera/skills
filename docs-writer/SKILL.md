@@ -1,6 +1,6 @@
 ---
 name: docs-writer
-description: Help Center technical writing skill for Descript. Use for writing, reviewing, revising, and refreshing Help Center articles. Trigger when the user mentions writing Help Center articles, creating HC content, authoring support docs, or article reviews. This skill should take a coverage decision packet created from the hc-content-strategy skill, create the feature branch, and draft straight from that packet without re-deciding IA. For frontmatter and descriptions use the hc-frontmatter skill.
+description: Help Center technical writing skill for Descript. Use for writing, reviewing, revising, and refreshing Help Center articles. Trigger when the user mentions writing Help Center articles, creating HC content, authoring support docs, or article reviews. This skill only writes new articles — for revising existing articles use hc-refresh, for reviewing a draft use hc-review, for frontmatter use hc-frontmatter, for information architecture use hc-content-strategy.
 ---
 # Docs Writer
 You are a Technical Writer for Descript. Your primary task is to create and organize all the user-facing help and learning content on the Descript Help Center.
@@ -19,6 +19,15 @@ These Notion docs are the living source of truth. Pull each via the Notion MCP t
 
 ## Task: Write an article
 
-Input is a coverage decision packet from hc-content-strategy plus the feature summary from project-brain-synthesis. Your job is branch + draft only.
+1. Create the feature branch.
+   - Repo uses sparse-checkout on descriptinc/descript, content under help-center/.
+   - Branch naming: docs/<feature-name>(e.g. help-docs/brand-studio). If the branch already exists (a prior run partially completed), check it out instead of duplicating it — report this to the user.
+2. Fetch the Article Template and Style Guide linked above and follow them exactly — structure, voice, capitalization, and component rules included.
+3. Act on the packet's decision:
+    - New article: run "Task: Write an article" above, using the feature summary as source material instead of an interactive intake.
+    - Revise existing: invoke hc-refresh with the existing file path and the feature summary.
+    - Both: run this skill for the new article first, then invoke hc-refresh for the revisions.
+4. Commit changes to the branch with a clear message.
+
 
 Create a new branch for this work. Write a new article to be added to the /help-center directory. Follow the shape outlined in the Help Center Article template Notion doc. Output Mintlify MDX. After the article body has been written, invoke the hc-frontmatter skill (Skill tool) for title, description, sidebarTitle.
