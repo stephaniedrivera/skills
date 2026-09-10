@@ -1,3 +1,4 @@
+---
 name: docs-writer
 description: Analyze a Project Brain, then generate new articles and/or revisions to existing help docs. Invoke when user uploads a link to a Project Brain Notion doc or asks for help preparing content for a new feature or release.
 ---
