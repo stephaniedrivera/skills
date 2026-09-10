@@ -18,4 +18,7 @@ These Notion docs are the living source of truth. Pull each via the Notion MCP t
 - Style Guide: https://app.notion.com/p/descript/Style-guide-973a7cd96d1f488e85ea69f8bbe7cf9f
 
 ## Task: Write an article
-Write a new article to be added to the Descript Help Center. Follow the shape outlined in the Help Center Article template Notion doc. Output Mintlify MDX. After the article body has been written, invoke the hc-frontmatter skill (Skill tool) for title, description, sidebarTitle.
+
+Input is a coverage decision packet from hc-content-strategy plus the feature summary from project-brain-synthesis. Your job is branch + draft only.
+
+Create a new branch for this work. Write a new article to be added to the /help-center directory. Follow the shape outlined in the Help Center Article template Notion doc. Output Mintlify MDX. After the article body has been written, invoke the hc-frontmatter skill (Skill tool) for title, description, sidebarTitle.
