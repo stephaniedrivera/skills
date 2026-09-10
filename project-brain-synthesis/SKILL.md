@@ -5,6 +5,7 @@ description: Reads a Linear project's linked Notion 'project brain' database and
 # Project Brain Synthesis
 
 ## Steps
+0. Ask for the Linear project if one hasn't been provided. You need either a Linear project link or a project name to proceed — don't guess or search broadly.
 1. Get the Linear project. Fetch it via Linear:get_project. Pull its description.
 2. Find the project-brain Notion link. 
 3. Match this Linear project to its row using, in order of preference:
