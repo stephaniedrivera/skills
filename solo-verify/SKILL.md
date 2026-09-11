@@ -5,8 +5,9 @@ description: Verify factual and UI claims in a drafted or revised Help Center ar
 # Solo verify
 Checks every checkable claim in a Help Center draft against Ask Solo (Ask Solo:search_product_context) before the article is considered ready to publish. This is a factual accuracy pass, not a style pass.
 ## Steps
-0. The input is draft articles for a feature update, created by docs-writer. If you cannot locate articles to be verified, stop and notify the user.
-1. Extract checkable claims from the draft — anything that describes what the product does, where a control lives, what a setting is called, plan/pricing gating, or a limitation. 2. Query Ask Solo per claim (or per closely related cluster of claims — batch naturally, don't fire one query per sentence if several claims describe the same flow). Use specific, concrete queries — feature name + what it claims to do — not the whole paragraph pasted in.
+0. The input is a handoff from docs-writer containing a branch name and a list of file paths (relative to help-center/). Check out the branch and locate each file. If the handoff is missing, the branch doesn't exist, or a file path can't be found, stop and notify the user before proceeding.
+1. Extract checkable claims from the draft — anything that describes what the product does, where a control lives, what a setting is called, plan/pricing gating, or a limitation.
+2. Query Ask Solo per claim (or per closely related cluster of claims — batch naturally, don't fire one query per sentence if several claims describe the same flow). Use specific, concrete queries — feature name + what it claims to do — not the whole paragraph pasted in.
 3. Classify each claim:
   - Confirmed: Ask Solo's result supports the claim as written.
   - Contradicted: Ask Solo's result conflicts (wrong label, wrong location, feature works differently than described). Note the correct version if Ask Solo's result makes it clear; otherwise flag as "needs human confirmation."
