@@ -16,7 +16,7 @@ publish. This is a factual accuracy pass, not a style pass.
    file. If the handoff is missing, the branch doesn't exist, or a file path can't
    be found, stop and notify the user before proceeding.
    
-1. **Open a PR** from the branch into main before running verification — the PR is
+1. **Open a draft PR** from the branch into main before running verification — the PR is
    where the review comments will land. If a PR for this branch already exists,
    use it rather than opening a duplicate.
 2. Extract checkable claims from the draft — anything that describes what the
