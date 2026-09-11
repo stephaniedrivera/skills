@@ -1,8 +1,8 @@
 ---
 name: "solo-verify"
-description: "Verify factual and UI claims in a drafted or revised Help Center article against the actual product, using Ask Solo (search_product_context) as the source of truth. Use this whenever a Help Center draft needs an accuracy pass before publishing, or whenever the user asks to fact-check or verify an article against the codebase.
+description: "Verify factual and UI claims in a drafted or revised Help Center article against the actual product, using Ask Solo (search_product_context) as the source of truth. Use this whenever a Help Center draft needs an accuracy pass before publishing, or whenever the user asks to fact-check or verify an article against the codebase. Do NOT use this for style or voice review (anchovy) or structural review (docs-review) — this skill checks only whether claims are true, not whether they're well written."
 ---
-
+ 
 # Solo verify
  
 Checks every checkable claim in a Help Center draft against Ask Solo
