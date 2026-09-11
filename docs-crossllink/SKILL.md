@@ -1,13 +1,13 @@
 ---
 name: "docs-crosslink"
-description: "Find and add crosslink opportunities between a new or revised Help Center article and the rest of the help-center directory. Use after solo-verify has confirmed accuracy, as step 5 of doc-pipeline, or any time the user asks to find crosslink opportunities for an article. Identifies both inbound links (existing articles that should link to this one) and outbound links (places in this article that should link elsewhere). Do NOT use this to write new content or verify factual claims — this skill only adds links."
+description: "Find and add crosslink opportunities between a new or revised Help Center article and the rest of the help-center directory. Use after solo-verify has confirmed accuracy, as step 5 of doc-pipeline, or any time the user asks to find crosslink opportunities for an article. Identifies both inbound links (existing articles that should link to this one) and outbound links (places in this article that should link elsewhere)."
 ---
 
 # Docs Crosslink
 
 Finds and adds crosslink opportunities between the target article and the rest of
 the Help Center. Runs after solo-verify — content should be accurate before links
-are added. This skill adds links; it does not write or verify content.
+are added.
 
 ## Steps
 
