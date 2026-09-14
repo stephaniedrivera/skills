@@ -1,6 +1,6 @@
 ---
 name: "docs-writer"
-description: "Write a new Descript Help Center article (Mintlify/MDX), including creating the feature branch it belongs on. Use once docs-content-strategy has already decided a new article is needed (as opposed to revising an existing one, or both) — this skill assumes that call is made, not making it itself. Trigger when the user asks to write, draft, or create a new Help Center article. This skill only writes new articles — for revising an existing article use docs-refresh, for reviewing a draft use docs-review, for frontmatter use docs-frontmatter, for deciding what articles should exist use docs-content-strategy."
+description: "Write a new Descript Help Center article (Mintlify/MDX), including creating the feature branch it belongs on. Use once docs-content-strategy has already decided a new article is needed (as opposed to revising an existing one, or both) — this skill assumes that call is made, not making it itself. Trigger when the user asks to write, draft, or create a new Help Center article. This skill only writes new articles — for revising an existing article use docs-refresh, for frontmatter use docs-frontmatter, for deciding what articles should exist use docs-content-strategy."
 ---
 
 # Help Center Writer
@@ -34,20 +34,23 @@ the task and notify the user — don't write from memory of what it used to say.
    decision (e.g. no Section given), ask rather than guessing.
 1. **Create the feature branch.** Repo uses sparse-checkout on
    `descriptinc/descript`, content under `help-center/`. Branch naming:
-   `docs/<slug>` (e.g. `docs/brand-studio`) — base the slug on the target title
-   from step 0. If a branch with that name already exists, check it out instead of
-   creating a duplicate — report this to the user.
+   `docs/<linear-project-id>-<slug>` where `linear-project-id` is the short
+   ID from the Linear project URL (e.g. `fdd77828` from
+   `linear.app/descript/project/regenerate-fdd77828d8fb`) and `slug` is the
+   feature name kebab-cased (e.g. `docs/fdd77828-regenerate-smooth-jump-cuts`).
+   This makes the branch traceable to Linear and the existence check in the
+   pipeline deterministic. If a branch matching `docs/<linear-project-id>-*`
+   already exists, check it out instead of creating a duplicate — report this
+   to the user.
 2. **Structure, voice, capitalization, components** — fetch the Article Template
    and Style Guide above and follow them exactly.
-3. **Structure, voice, capitalization, components** — fetch the Article Template
-   and Style Guide above and follow them exactly.
-4. **Output Mintlify MDX.**
-5. **MDX compatibility pass** — confirm the document uses only Mintlify-compatible
+3. **Output Mintlify MDX.**
+4. **MDX compatibility pass** — confirm the document uses only Mintlify-compatible
    MDX (per the Style Guide's component rules) before committing.
-6. **Commit and push.** Commit to the branch with a clear message, then push it.
+5. **Commit and push.** Commit to the branch with a clear message, then push it.
    Output the following handoff for solo-verify:
    ```
-   Branch: docs/<slug>
+   Branch: docs/<linear-project-id>-<slug>
    Files: [list of file paths created or modified, relative to help-center/]
    ```
    Do not open a PR — that's solo-verify's job.
