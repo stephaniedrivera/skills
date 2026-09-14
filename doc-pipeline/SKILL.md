@@ -17,6 +17,7 @@ this skill sequences them and carries output from one to the next.
 5. docs-crosslink             → inbound and outbound crosslinks
 6. unslop                     → remove AI writing patterns
 7. anchovy                    → Descript brand voice
+8. docs-frontmatter           → title, description, sidebarTitle on final content
 ```
 
 ## Steps
@@ -51,7 +52,11 @@ this skill sequences them and carries output from one to the next.
 8. **Run anchovy.** Pass the unslopped file(s). It applies Descript's brand voice
    and commits the final version to the branch.
 
-9. **Report when done:**
+9. **Run docs-frontmatter.** Pass the final file(s). It writes `title`,
+   `description`, and `sidebarTitle` against the finished article content and
+   commits to the branch.
+
+10. **Report when done:**
    - Branch name and draft PR link
    - Files created or changed
    - Verification summary (confirmed / contradicted / unverifiable counts)
