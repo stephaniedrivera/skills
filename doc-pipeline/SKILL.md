@@ -23,6 +23,10 @@ this skill sequences them and carries output from one to the next.
 ## Steps
 
 1. **Get the Linear project link** from the user if not already provided.
+   Extract the short Linear project ID from the URL — the hex string after
+   the last hyphen before `/overview` (e.g. `fdd77828` from
+   `linear.app/descript/project/regenerate-fdd77828d8fb`). This ID is used
+   for branch naming in step 4.
 
 2. **Run project-brain-synthesis.** Pass the Linear link. Collect the structured
    feature summary it produces. If it flags gaps or stops to ask the user a
@@ -31,6 +35,15 @@ this skill sequences them and carries output from one to the next.
 3. **Run docs-content-strategy.** Pass the feature summary from step 2 as input.
    Collect the decision packet it produces. If it surfaces an ambiguity and asks
    the user to decide, wait for that to resolve before continuing.
+
+3.5. **Check for an existing branch** before creating anything. Search Mintlify
+   branches for `docs/<linear-project-id>-*`. If a match exists:
+   - Branch + open PR → attach to that branch; add commits on top; comment on
+     the existing PR rather than opening a new one.
+   - Branch, no PR → check out that branch; continue the pipeline from step 4.
+   - No match → proceed to create a new branch in step 4 using the convention:
+     `docs/<linear-project-id>-<feature-slug>` (e.g.
+     `docs/fdd77828-regenerate-smooth-jump-cuts`).
 
 4. **Run docs-writer and/or docs-refresh**, based on the decision packet from step 3:
    - **New article** → docs-writer
