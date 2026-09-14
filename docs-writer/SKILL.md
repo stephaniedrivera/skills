@@ -1,56 +1,42 @@
 ---
-name: "docs-writer"
-description: "Write a new Descript Help Center article (Mintlify/MDX), including creating the feature branch it belongs on. Use once docs-content-strategy has already decided a new article is needed (as opposed to revising an existing one, or both) — this skill assumes that call is made, not making it itself. Trigger when the user asks to write, draft, or create a new Help Center article. This skill only writes new articles — for revising an existing article use docs-refresh, for frontmatter use docs-frontmatter, for deciding what articles should exist use docs-content-strategy."
+name: "docs-refresh"
+description: "Rewrite, fix, or refresh an existing Descript Help Center article (Mintlify/MDX) — especially after a product change makes it stale. Use whenever the user asks to update, refresh, fix, or rewrite an existing article, or references a product change that may have made current docs inaccurate. Also use in automated/unattended mode as part of step 4 of the doc-pipeline, when docs-content-strategy's decision is to revise an existing article rather than write a new one. Do NOT use this to write a brand-new article (docs-writer), to decide which articles need updating in the first place (docs-content-strategy) — this skill assumes the target article is already identified."
 ---
 
-# Help Center Writer
+# Help Center Refresher
 
-Writes new Help Center articles, starting from creating the branch they'll live on.
-**Assumes `docs-content-strategy` has already decided a new article is needed** — this
-skill doesn't make that call, it acts on it. If the decision was "both" (new article
-+ revise existing), this skill handles the new-article half; `docs-refresh` handles
-the rest.
-
-Nothing else lives here — revising existing articles, reviewing drafts, frontmatter,
-and IA decisions are each their own skill (see the description above). Invoke them;
-don't reimplement them here.
+Revises an existing Help Center article. Assumes the target article is already
+identified — by the user, or by a coverage decision packet from `docs-content-strategy`
+in the pipeline. This skill doesn't decide *whether* to revise; it does the revision.
 
 **Fetch and follow, don't restate:**
 - **Style Guide**: https://www.notion.so/descript/973a7cd96d1f488e85ea69f8bbe7cf9f
 - **Help Center Article Template**: https://www.notion.so/descript/249abe2e1a508096a1c1d4f54ae98378
-- **Capitalization Guide + feature name database**: https://www.notion.so/descript/241abe2e1a5080a1ad8cd0c3fb7cd644
-- **Writing Guidelines**: https://www.notion.so/descript/4b0b93da3e9a485baf336281ba13ab17
-- **Descript Voice**: https://www.notion.so/descript/ae07929a5c6a4fe4928f83fb42f5e9d7
 
-These are the living source of truth. If you cannot access one for any reason, stop
-the task and notify the user — don't write from memory of what it used to say.
+## What to do
 
-## Task: Write an article
+1. **Pull the current article** (from the repo, or the branch if running inside the
+   pipeline).
+2. **Find what's now inaccurate** — steps, labels, UI descriptions, limits, plan
+   gating — against whatever changed (a product spec, a feature summary from
+   `project-brain-synthesis`, or the user's own description of the change).
+3. **Rewrite only the affected sections**, keeping the rest of the article's
+   structure intact, per the Template and Style Guide.
+4. **Re-check frontmatter** via **docs-frontmatter** if the change affects what the
+   article covers.
+5. **Report what changed**, most-inaccurate first — a plain list of before/after,
+   not a full re-diff.
 
-0. **Take docs-content-strategy's decision as your brief.** Before creating anything,
-   use its output for: the target article title, Section/Category placement (for
-   `docs.json` nav), and any outbound crosslinks it identified. Don't re-derive
-   these yourself or invent a different title — if something's missing from the
-   decision (e.g. no Section given), ask rather than guessing.
-1. **Create the feature branch.** Repo uses sparse-checkout on
-   `descriptinc/descript`, content under `help-center/`. Branch naming:
-   `docs/<linear-project-id>-<slug>` where `linear-project-id` is the short
-   ID from the Linear project URL (e.g. `fdd77828` from
-   `linear.app/descript/project/regenerate-fdd77828d8fb`) and `slug` is the
-   feature name kebab-cased (e.g. `docs/fdd77828-regenerate-smooth-jump-cuts`).
-   This makes the branch traceable to Linear and the existence check in the
-   pipeline deterministic. If a branch matching `docs/<linear-project-id>-*`
-   already exists, check it out instead of creating a duplicate — report this
-   to the user.
-2. **Structure, voice, capitalization, components** — fetch the Article Template
-   and Style Guide above and follow them exactly.
-3. **Output Mintlify MDX.**
-4. **MDX compatibility pass** — confirm the document uses only Mintlify-compatible
-   MDX (per the Style Guide's component rules) before committing.
-5. **Commit and push.** Commit to the branch with a clear message, then push it.
-   Output the following handoff for solo-verify:
-   ```
-   Branch: docs/<linear-project-id>-<slug>
-   Files: [list of file paths created or modified, relative to help-center/]
-   ```
-   Do not open a PR — that's solo-verify's job.
+## Lifecycle calls belong to the user
+
+Whether a promo ended, a feature is deprecated, or users actually still do X: flag
+it, don't guess. To **delete** a page: remove it from `docs.json` navigation, repoint
+or remove any redirects whose destination was that page, then re-validate `docs.json`
+as JSON.
+
+## Pipeline context
+
+When invoked from `docs-writer`'s pipeline-draft step, you'll be on an existing
+feature branch — commit your changes there, same branch, don't create a new one.
+Report back file paths and a one-line summary per file so `docs-writer` can pass that
+along to `solo-verify`.
