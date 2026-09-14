@@ -3,72 +3,108 @@
 End-to-end documentation pipeline for Descript Help Center content.
 Start here before editing any skill.
 
-## Pipeline overview
+## Architecture
+
+Everything runs in Claude (Cowork scheduled task). Mintlify is the repo
+interface and PR host — it has no automation role.
 
 ```
-1. project-brain-synthesis   → feature summary from Linear + Notion
-2. docs-content-strategy     → coverage decision (new / revise / both)
-3. docs-writer / docs-refresh → branch + draft
-4. solo-verify               → draft PR + Ask Solo accuracy check
-5. docs-crosslink            → inbound + outbound links
-6. unslop                    → remove AI writing patterns
-7. anchovy                   → Descript brand voice
-8. docs-frontmatter          → title, description, sidebarTitle (runs last)
+TRIGGER
+Cowork scheduled task (Tue 5am / 2pm CT, Wed 5am CT)
+        ↓
+CLAUDE — full pipeline
+  1.  Slack → find PM-PMM post (channel C07P1PQ757S)
+  2.  Extract items into four buckets:
+        A. Last week ships (catch-up)
+        B. This week ships (pre-ship)
+        C. Next week ships (early prep)
+        D. Experiments (hidden article + support note)
+  3.  Check for existing branch: docs/<linear-project-id>-<slug>
+  4.  project-brain-synthesis  → feature summary
+  5.  docs-content-strategy    → coverage decision
+  6.  docs-writer / docs-refresh → branch + draft
+  7.  solo-verify              → accuracy check + auto-fix
+  8.  docs-crosslink           → inbound + outbound links
+  9.  unslop                   → remove AI writing patterns
+  10. anchovy                  → Descript brand voice
+  11. docs-frontmatter         → title, description, sidebarTitle
+  12. Open draft PR via Mintlify MCP
+  13. DM Stephanie (U04RH7BA1CP) on Slack
+        ↓
+YOU
+  Review draft PR → assign yourself → mark ready → CI runs → merge
 ```
-
-Invoke via `doc-pipeline` with a Linear project link. Each skill can
-also be invoked standalone — see individual skill files for details.
 
 ## Skill files
 
 | Skill | File | Job |
 |---|---|---|
-| `doc-pipeline` | doc-pipeline/SKILL.md | Orchestrator — runs 1–8 in sequence |
+| `doc-pipeline` | doc-pipeline/SKILL.md | Orchestrator — runs steps 1–13 |
 | `project-brain-synthesis` | project-brain-synthesis/SKILL.md | Reads Linear + Notion project brain |
 | `docs-content-strategy` | docs-content-strategy/SKILL.md | Decides new / revise / both |
 | `docs-writer` | docs-writer/SKILL.md | Writes new articles + creates branch |
 | `docs-refresh` | docs-refresh/SKILL.md | Revises existing articles |
-| `docs-review` | docs-review/SKILL.md | Quality / structure review |
-| `solo-verify` | solo-verify/SKILL.md | Accuracy check via Ask Solo |
+| `solo-verify` | solo-verify/SKILL.md | Accuracy check via Ask Solo, auto-fixes |
 | `docs-crosslink` | docs-crosslink/SKILL.md | Adds inbound + outbound links |
 | `docs-frontmatter` | docs-frontmatter/SKILL.md | title, description, sidebarTitle |
 
-`unslop` and `anchovy` are organization-level skills — edit them in
-their own skill files, not here.
+`unslop` and `anchovy` are organization-level skills.
+
+## Branch naming convention
+
+```
+docs/<linear-project-id>-<feature-slug>
+```
+
+Example: `docs/fdd77828-regenerate-smooth-jump-cuts`
+
+The Linear project ID is the short hex string from the project URL. Using it
+as a prefix makes branch existence checks deterministic and every branch
+traceable back to Linear.
 
 ## Tool dependencies
 
-Each skill requires specific MCP connectors. Make sure these are
-connected before running the pipeline.
-
 | Step | Requires |
 |---|---|
-| `project-brain-synthesis` | **Linear** (get_project, list_issues), **Notion** (notion-fetch, notion-ai-search) |
-| `docs-content-strategy` | **Mintlify** (checkout, read, search) for repo access |
-| `docs-writer` | **Mintlify** (checkout, write_page, save), **Git** (branch creation via Mintlify) |
-| `docs-refresh` | **Mintlify** (checkout, read, edit_page, save) |
-| `solo-verify` | **Ask Solo** (search_product_context), **Mintlify** (checkout, read — for reading branch content and reporting in chat) |
-| `docs-crosslink` | **Mintlify** (read, edit_page), **Mintlify** (save for committing link changes) |
-| `docs-frontmatter` | **Mintlify** (read, edit_page) |
-| `unslop` | None (in-context pass) |
-| `anchovy` | **Notion** (fetch Descript Voice doc) |
+| Slack trigger + DM | **Slack** MCP |
+| project-brain-synthesis | **Linear** (get_project, list_issues), **Notion** (notion-fetch, notion-ai-search) |
+| docs-content-strategy | **Mintlify** (checkout, read, search) |
+| docs-writer / docs-refresh | **Mintlify** (checkout, write_page, edit_page, save) |
+| solo-verify | **Ask Solo** (search_product_context), **Mintlify** (read, edit_page, save) |
+| docs-crosslink | **Mintlify** (search, read, edit_page, save) |
+| unslop / anchovy | In-context pass — no external tools |
+| docs-frontmatter | **Mintlify** (read, edit_page, save), **Notion** (capitalization guide) |
+| PR creation | **Mintlify** (save, mode: pr) |
 
-> **Note:** GitHub MCP does not appear to load in standard Claude chat
-> sessions — it loads in Claude Code. If solo-verify can't open a PR,
-> switch to Claude Code or use the Mintlify save + manual PR flow.
-> This is a known gap — track in Linear if it blocks the pipeline.
+## Mintlify settings
+
+- `createDraftPrByDefault: true` — all PRs open as drafts automatically.
+  Mark ready for review manually in GitHub when you want CI to run.
+
+## Cowork task
+
+See `cowork-doc-pipeline-task.md` for the full task spec to paste into
+Cowork. Schedule: Tuesday 5am CT, Tuesday 2pm CT, Wednesday 5am CT.
 
 ## Known gaps (as of 2026-09-14)
 
-- **GitHub MCP** requires admin permission in the Descript org and is not
+- **GitHub MCP** requires admin permission in the Descript org — not
   available for standard users. All branch and file operations go through
-  **Mintlify MCP** instead. solo-verify outputs its report in chat rather
-  than as inline PR comments.
-- **Mintlify branch naming** is auto-generated by Mintlify checkout
-  (`admin-mcp/<slug>-<sha>`). docs-writer's `docs/<slug>` convention is
-  instructional — the actual branch name comes from Mintlify's response.
-  Use whatever Mintlify returns and carry it through the pipeline.
-- **Pipeline pause points** not yet decided — run `doc-pipeline` end to end
-  first, then add gates where needed based on real usage.
-- **Slack trigger / automation** not yet built — pipeline is manually
-  invoked. Automation design is parked pending pipeline stabilization.
+  Mintlify MCP instead. solo-verify reports in chat rather than as inline
+  PR comments.
+- **PR assignee** — Mintlify's save tool doesn't support setting a PR
+  assignee. Assign yourself manually in GitHub after the PR opens.
+- **Pipeline pause points** — not yet decided. Run end to end first, then
+  add gates based on real usage.
+- **Mintlify .mintignore behavior** — unconfirmed whether the workflow
+  agent bypasses .mintignore. Ticket to Mintlify support drafted but not
+  yet sent. Relevant if skills are ever moved into the repo.
+- **Anchovy quality on Mintlify** — not tested. Anchovy stays in Claude
+  for now. Revisit if Mintlify automation credit usage becomes a priority.
+
+## Archived
+
+- `mintlify-workflows.md` — obsolete. Mintlify automations were evaluated
+  but all pipeline steps stayed in Claude due to Mintlify's agent lacking
+  access to Linear, Notion, and Ask Solo. The broken link check is already
+  covered by the existing CI linter.
