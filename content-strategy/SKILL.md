@@ -11,24 +11,34 @@ or both. This skill decides; it does not write.
 
 ## What to do
 
-1. **Read the feature summary.** The input is a structured summary from
+1. **Check ship status.** Before searching the repo, confirm the feature is shipped
+   and user-facing. Use the Linear project status and the feature summary's ship
+   status field:
+   - **Shipped / completed** → proceed.
+   - **In progress / in experiment / backlog** → stop. Don't make a coverage
+     decision for an unshipped feature. Report the status back and ask the user
+     whether to proceed anyway (e.g. drafting ahead of launch is sometimes
+     intentional) or wait.
+   - **Status unclear** → flag it and ask before proceeding.
+
+2. **Read the feature summary.** The input is a structured summary from
    `project-brain-synthesis` — feature name, new capabilities, affected UI areas,
    related features, caveats. If no summary is present, stop and ask for one before
    proceeding.
 
-2. **Search the live repo** for existing articles that touch this feature. Look
+3. **Search the live repo** for existing articles that touch this feature. Look
    across the `help-center/` directory and `docs.json` using the feature name,
    related UI surfaces, and workflow terms from the summary. Cast a wide net —
    better to review and discard a false match than miss a page that needs updating.
 
-3. **Classify each match:**
+4. **Classify each match:**
    - **Needs content update** — instructions or UI descriptions are now wrong or
      incomplete given the new feature.
    - **Needs crosslink only** — content is still accurate, but should reference the
      new feature.
    - **No relation** — discard.
 
-4. **Decide:**
+5. **Decide:**
    - **New article** — no existing page owns this job, or absorbing it would force
      an existing page to cover two unrelated jobs.
    - **Revise existing** — one or more matches need a content update and can absorb
@@ -37,11 +47,11 @@ or both. This skill decides; it does not write.
      pages that need updating or crosslinking. This is the common case for a
      hub feature or a significant capability addition.
 
-5. **If the fit is ambiguous** — two equally plausible existing homes, or genuinely
+6. **If the fit is ambiguous** — two equally plausible existing homes, or genuinely
    unclear whether this warrants a new article — flag it. Don't pick silently.
    Surface the options and the tradeoff so the human can decide.
 
-6. **Output the decision packet** (see format below) and hand it to:
+7. **Output the decision packet** (see format below) and hand it to:
    - `docs-writer` if the decision includes a new article
    - `docs-refresh` if the decision includes revising existing articles
    - Both, in that order, if the decision is "both"
