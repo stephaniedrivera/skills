@@ -23,14 +23,15 @@ sidebarTitle: "Studio Sound"
 - `description`: one outcome-focused sentence — see the standard below.
 - `sidebarTitle`: feature name or 2–3 words.
 - Optional: `icon`, `tag: "New"`, `deprecated: true`.
-- **Capitalization** — fetch the living source: https://www.notion.so/descript/241abe2e1a5080a1ad8cd0c3fb7cd644.
+- **Capitalization** — fetch the living source: https://www.notion.so/descript/241abe2e1a5080a1ad8cd0c3fb7cd644. Branded features cap (Overdub, Studio Sound, Underlord); generic nouns don't (projects, scenes, timeline).
+
 ## Description standard
 
-The `description` is the SEO meta description and the AI assistant's context for this page. Every description must be:
+The `description` is the SEO meta description and the AI assistant's context for this page. Every description must:
 
 1. **Accurate** — right feature, right platform, no overclaiming. Inaccurate is worse than none.
 2. **≤160 chars**, key point in the first ~120. Never a bare title restatement.
-3. **Cover the whole page**, not one sub-section.
+3. **Covers the whole page**, not one sub-section.
 4. **Primary search term early**, naturally.
 5. **Grammatical, no typos.**
 6. **Concrete reason to click** — real action or outcome.
